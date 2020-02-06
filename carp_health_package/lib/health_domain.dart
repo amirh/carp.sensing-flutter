@@ -16,6 +16,12 @@ class HealthMeasure extends Measure {
       FromJsonFactory.fromJson(json[Serializable.CLASS_IDENTIFIER].toString(), json);
 
   Map<String, dynamic> toJson() => _$HealthMeasureToJson(this);
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'HealthMeasure: $healthDataTypes ($duration)';
+  }
 }
 
 /// A [Datum] that holds a [HealthDataPoint] datapoint information collected through the [World's Air Quality Index (WAQI)](https://waqi.info) API.

@@ -117,6 +117,7 @@ class StudyMock implements StudyManager {
                 namespace: NameSpace.CARP,
                 types: [HealthSamplingPackage.HEALTH],
               ));
+
     }
     return _study;
   }

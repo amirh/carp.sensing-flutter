@@ -1,7 +1,9 @@
 part of health_lib;
 
 class HealthProbe extends StreamProbe {
-  StreamController<HealthDatum> streamController = StreamController<HealthDatum>.broadcast();
+  StreamController<HealthDatum> streamController =
+      StreamController<HealthDatum>.broadcast();
+
   Stream<HealthDatum> get stream => streamController.stream;
   List<HealthDataPoint> healthData = List<HealthDataPoint>();
 
@@ -10,10 +12,12 @@ class HealthProbe extends StreamProbe {
 
   /// Make Health plugin call and fetch data points
   Future<void> _makeApiCall(DateTime start, DateTime end) async {
+    print('HealthProbe _makeApiCall()');
     for (HealthDataType type in dataTypes) {
       // calls to 'Health.getHealthDataFromType' must be wrapped in a try catch block.
       try {
-        List<HealthDataPoint> healthData = await Health.getHealthDataFromType(start, end, type);
+        List<HealthDataPoint> healthData =
+            await Health.getHealthDataFromType(start, end, type);
         healthData.addAll(healthData);
       } catch (exception) {
         print(exception.toString());
@@ -21,22 +25,26 @@ class HealthProbe extends StreamProbe {
       }
 
       // convert [HealthDataPoint] to Datums and add them to the stream.
-      for (HealthDataPoint h in healthData) streamController.add(HealthDatum.fromHealthDataPoint(h));
+      for (HealthDataPoint h in healthData)
+        streamController.add(HealthDatum.fromHealthDataPoint(h));
     }
 
     Future<void> onResume() async {
+      print('HealthProbe onResume()');
       super.onResume();
       _makeApiCall(DateTime.now().subtract(duration), DateTime.now());
     }
 
     Future<void> onInitialize(Measure measure) async {
-      print('test');
+      print('HealthProbe onInitialize()');
       assert(measure is HealthMeasure);
       super.onInitialize(measure);
       duration = (measure as HealthMeasure).duration;
       dataTypes = (measure as HealthMeasure).healthDataTypes;
+    }
 
-      print('HealthProbe: $dataTypes ($duration)');
+    Future<void> onStart() async {
+      print('HealthProbe onStart()');
     }
   }
 }
