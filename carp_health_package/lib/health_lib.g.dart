@@ -106,12 +106,9 @@ const _$HealthDataTypeEnumMap = {
 
 HealthDatum _$HealthDatumFromJson(Map<String, dynamic> json) {
   return HealthDatum(
-    json['value'] as num,
-    json['unit'] as String,
-    json['date_from'] as int,
-    json['date_to'] as int,
-    json['data_type'] as String,
-    json['platform'] as String,
+    (json['health_data'] as List)
+        ?.map((e) => e as Map<String, dynamic>)
+        ?.toList(),
   )
     ..id = json['id'] as String
     ..timestamp = json['timestamp'] == null
@@ -130,11 +127,6 @@ Map<String, dynamic> _$HealthDatumToJson(HealthDatum instance) {
 
   writeNotNull('id', instance.id);
   writeNotNull('timestamp', instance.timestamp?.toIso8601String());
-  writeNotNull('value', instance.value);
-  writeNotNull('unit', instance.unit);
-  writeNotNull('date_from', instance.dateFrom);
-  writeNotNull('date_to', instance.dateTo);
-  writeNotNull('data_type', instance.dataType);
-  writeNotNull('platform', instance.platform);
+  writeNotNull('health_data', instance.healthData);
   return val;
 }

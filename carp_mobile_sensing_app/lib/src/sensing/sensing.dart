@@ -17,15 +17,15 @@ class Sensing {
 //    SamplingPackageRegistry.register(ConnectivitySamplingPackage());
 //    SamplingPackageRegistry.register(ContextSamplingPackage());
 //    SamplingPackageRegistry.register(CommunicationSamplingPackage());
-//    SamplingPackageRegistry.register(AudioSamplingPackage());
+    SamplingPackageRegistry.register(AudioSamplingPackage());
 //    SamplingPackageRegistry.register(ESenseSamplingPackage());
+    SamplingPackageRegistry.register(DeviceSamplingPackage());
     SamplingPackageRegistry.register(HealthSamplingPackage());
 
     // create/load and register external data managers
     DataManagerRegistry.register(CarpDataManager());
 //    DataManagerRegistry.register(FirebaseStorageDataManager());
 //    DataManagerRegistry.register(FirebaseDatabaseDataManager());
-
 
     // create/load and register external data managers
     DataManagerRegistry.register(CarpDataManager());
@@ -37,6 +37,12 @@ class Sensing {
   Future<void> start() async {
     // Get the study.
     study = await mock.getStudy(testStudyId);
+    SamplingPackageRegistry.packages;
+    for (Task t in study.tasks) {
+      for (Measure m in t.measures) {
+
+      }
+    }
 
     // Create a Study Controller that can manage this study, initialize it, and start it.
     controller = StudyController(study);
@@ -82,8 +88,9 @@ class StudyMock implements StudyManager {
 
   Future<Study> getStudy(String studyId) async {
     //return _getTestingStudy(studyId);
-
-    return _getHealthStudy('Health Study');
+    Study s = await _getHealthStudy('Health Study');
+    print(s);
+    return s;
     //return _getHighFrequencyStudy('DF#4dD-high-frequency');
     //return _getAllProbesAsAwareStudy('#4-aware-carp');
     //return _getAllMeasuresStudy(studyId);
@@ -95,9 +102,10 @@ class StudyMock implements StudyManager {
   Future<Study> _getTestingStudy(String studyId) async {
     if (_study == null) {
       _study = Study(studyId, username)
-        ..name = testStudyName
-        ..description = 'This is a study for testing and debugging -- especially on iOS.'
-        ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FIREBASE_DATABSE)
+            ..name = testStudyName
+            ..description =
+                'This is a study for testing and debugging -- especially on iOS.'
+            ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FIREBASE_DATABSE)
 //            ..addTriggerTask(
 //                ImmediateTrigger(),
 //                Task()
@@ -199,7 +207,7 @@ class StudyMock implements StudyManager {
 //                      name: 'eSense - Button', enabled: true, deviceName: 'eSense-0332'))
 //                  ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_SENSOR),
 //                      name: 'eSense - Sensors', enabled: true, deviceName: 'eSense-0332', samplingRate: 10)))
-      //
+          //
           ;
     }
     return _study;
@@ -208,9 +216,10 @@ class StudyMock implements StudyManager {
   Future<Study> _getCoverageStudy(String studyId) async {
     if (_study == null) {
       _study = Study(studyId, username)
-        ..name = studyId
-        ..description = 'This is a study for testing the coverage of sampling.'
-        ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
+            ..name = studyId
+            ..description =
+                'This is a study for testing the coverage of sampling.'
+            ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
 //        ..addTriggerTask(
 //            ImmediateTrigger(),
 //            Task()
@@ -225,15 +234,15 @@ class StudyMock implements StudyManager {
 //                  AudioSamplingPackage.NOISE, // 60 s
 //                ],
 //              ))
-        ..addTriggerTask(
-            PeriodicTrigger(period: 5 * 60 * 1000), // 5 min
-            Task()
-              ..measures = SamplingSchema.debug().getMeasureList(
-                namespace: NameSpace.CARP,
-                types: [
-                  AppsSamplingPackage.APP_USAGE, // 60 s
-                ],
-              ))
+            ..addTriggerTask(
+                PeriodicTrigger(period: 5 * 60 * 1000), // 5 min
+                Task()
+                  ..measures = SamplingSchema.debug().getMeasureList(
+                    namespace: NameSpace.CARP,
+                    types: [
+                      AppsSamplingPackage.APP_USAGE, // 60 s
+                    ],
+                  ))
 //        ..addTriggerTask(
 //            PeriodicTrigger(period: 10 * 60 * 1000), // 10 min
 //            Task()
@@ -244,7 +253,7 @@ class StudyMock implements StudyManager {
 //                  ContextSamplingPackage.AIR_QUALITY,
 //                ],
 //              ))
-      //
+          //
           ;
     }
     return _study;
@@ -256,14 +265,40 @@ class StudyMock implements StudyManager {
         ..name = studyId
         ..description = 'This is a study for testing the Health Package.'
         ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
+//        ..addTriggerTask(
+//            PeriodicTrigger(period: 5 * 1000), // 5 secs
+//            Task()
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [HealthSamplingPackage.HEALTH],
+//              ))
         ..addTriggerTask(
-            PeriodicTrigger(period: 5 * 1000), // 5 secs
+            PeriodicTrigger(period: 10 * 1000),
             Task()
               ..measures = SamplingSchema.debug().getMeasureList(
                 namespace: NameSpace.CARP,
-                types: [HealthSamplingPackage.HEALTH],
+                types: [
+                  HealthSamplingPackage.HEALTH,
+                ],
+              ))
+        ..addTriggerTask(
+            PeriodicTrigger(period: 10 * 1000),
+            Task()
+              ..measures = SamplingSchema.debug().getMeasureList(
+                namespace: NameSpace.CARP,
+                types: [
+                  AudioSamplingPackage.NOISE,
+                ],
+              ))
+        ..addTriggerTask(
+            PeriodicTrigger(period: 10 * 1000),
+            Task()
+              ..measures = SamplingSchema.debug().getMeasureList(
+                namespace: NameSpace.CARP,
+                types: [
+                DeviceSamplingPackage.MEMORY,
+                ],
               ));
-
     }
     return _study;
   }
@@ -271,10 +306,10 @@ class StudyMock implements StudyManager {
   Future<Study> _getESenseStudy(String studyId) async {
     if (_study == null) {
       _study = Study(studyId, username)
-        ..name = 'CARP Mobile Sensing - eSense sampling demo'
-        ..description =
-            'This is a study designed to test the eSense earable computing platform together with CARP Mobile Sensing'
-        ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
+            ..name = 'CARP Mobile Sensing - eSense sampling demo'
+            ..description =
+                'This is a study designed to test the eSense earable computing platform together with CARP Mobile Sensing'
+            ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
 //        ..addTriggerTask(
 //            ImmediateTrigger(),
 //            Task('eSense')
@@ -342,14 +377,23 @@ class StudyMock implements StudyManager {
 //                  ConnectivitySamplingPackage.WIFI,
 //                ],
 //              ))
-        ..addTriggerTask(
-            DelayedTrigger(delay: 10 * 1000),
-            Task('eSense')
-              ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_BUTTON),
-                  name: 'eSense - Button', enabled: true, deviceName: 'eSense-0332'))
-              ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_SENSOR),
-                  name: 'eSense - Sensors', enabled: true, deviceName: 'eSense-0332', samplingRate: 10)))
-      //
+            ..addTriggerTask(
+                DelayedTrigger(delay: 10 * 1000),
+                Task('eSense')
+                  ..measures.add(ESenseMeasure(
+                      MeasureType(
+                          NameSpace.CARP, ESenseSamplingPackage.ESENSE_BUTTON),
+                      name: 'eSense - Button',
+                      enabled: true,
+                      deviceName: 'eSense-0332'))
+                  ..measures.add(ESenseMeasure(
+                      MeasureType(
+                          NameSpace.CARP, ESenseSamplingPackage.ESENSE_SENSOR),
+                      name: 'eSense - Sensors',
+                      enabled: true,
+                      deviceName: 'eSense-0332',
+                      samplingRate: 10)))
+          //
           ;
     }
     return _study;
