@@ -20,7 +20,9 @@ dependencies:
   json_annotation: ^3.0.0
   path_provider: ^1.2.0
   archive: ^2.0.4
-  permission_handler: ^4.0.0
+  #permission_handler: ^4.0.0
+  permission_handler:
+    path: ../permission_handler/
 
   # probe-dependent plugins
   sensors: ^0.4.0
@@ -34,6 +36,9 @@ dependencies:
   screen_state: ^0.1.0    # Screen LOCK/ON/OFF
   app_usage: ^0.1.0       # App-usage statistics
 
+#dependency_overrides:
+#  permission_handler:
+#    path: ../permission_handler/
 
 dev_dependencies:
   flutter_test:

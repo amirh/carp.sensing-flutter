@@ -28,12 +28,14 @@ dependencies:
 dependency_overrides:
   carp_mobile_sensing:
     path: ../carp_mobile_sensing/
-  carp_connectivity_package:
-    path: ../carp_connectivity_package/
+#  carp_connectivity_package:
+#    path: ../carp_connectivity_package/
+  carp_health_package:
+    path: ../carp_health_package/
   carp_communication_package:
     path: ../carp_communication_package/
-  carp_context_package:
-    path: ../carp_context_package/
+#  carp_context_package:
+#    path: ../carp_context_package/
   carp_audio_package:
     path: ../carp_audio_package/
   carp_esense_package:
