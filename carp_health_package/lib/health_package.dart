@@ -39,11 +39,18 @@ class HealthSamplingPackage implements SamplingPackage {
     ..powerAware = true
     ..measures.addEntries([
       MapEntry(
-        HEALTH,
-        Measure(MeasureType(NameSpace.CARP, HEALTH),
-            name: 'Health', enabled: true),
-      ),
+          HEALTH,
+          HealthMeasure(
+              MeasureType(NameSpace.CARP, HEALTH),
+              [
+                HealthDataType.STEPS,
+                HealthDataType.WEIGHT,
+                HealthDataType.BODY_MASS_INDEX
+              ],
+              Duration(hours: 1), name: 'Health Data')),
     ]);
+
+
 
   SamplingSchema get normal => common;
   SamplingSchema get light => common;

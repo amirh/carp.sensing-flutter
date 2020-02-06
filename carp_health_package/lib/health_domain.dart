@@ -5,8 +5,10 @@ part of health_lib;
 class HealthMeasure extends Measure {
   List<HealthDataType> healthDataTypes;
   Duration duration;
+  String name;
+  bool enabled;
 
-  HealthMeasure(MeasureType type, this.healthDataTypes, this.duration) : super(type);
+  HealthMeasure(MeasureType type, this.healthDataTypes, this.duration, {this.name, this.enabled = true}) : super(type);
 
   static Function get fromJsonFunction => _$HealthMeasureFromJson;
 

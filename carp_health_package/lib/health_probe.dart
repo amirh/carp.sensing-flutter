@@ -30,10 +30,13 @@ class HealthProbe extends StreamProbe {
     }
 
     Future<void> onInitialize(Measure measure) async {
+      print('test');
       assert(measure is HealthMeasure);
       super.onInitialize(measure);
       duration = (measure as HealthMeasure).duration;
       dataTypes = (measure as HealthMeasure).healthDataTypes;
+
+      print('HealthProbe: $dataTypes ($duration)');
     }
   }
 }
