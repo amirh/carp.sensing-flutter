@@ -25,6 +25,12 @@ class Sensing {
     DataManagerRegistry.register(CarpDataManager());
 //    DataManagerRegistry.register(FirebaseStorageDataManager());
 //    DataManagerRegistry.register(FirebaseDatabaseDataManager());
+
+
+    // create/load and register external data managers
+    DataManagerRegistry.register(CarpDataManager());
+//    DataManagerRegistry.register(FirebaseStorageDataManager());
+//    DataManagerRegistry.register(FirebaseDatabaseDataManager());
   }
 
   /// Start sensing.
@@ -77,7 +83,7 @@ class StudyMock implements StudyManager {
   Future<Study> getStudy(String studyId) async {
     //return _getTestingStudy(studyId);
 
-    return _getHealthStudy('#5-coverage');
+    return _getHealthStudy('Health Study');
     //return _getHighFrequencyStudy('DF#4dD-high-frequency');
     //return _getAllProbesAsAwareStudy('#4-aware-carp');
     //return _getAllMeasuresStudy(studyId);
@@ -90,16 +96,156 @@ class StudyMock implements StudyManager {
     if (_study == null) {
       _study = Study(studyId, username)
         ..name = testStudyName
-        ..description =
-            'This is a study for testing and debugging -- especially on iOS.'
+        ..description = 'This is a study for testing and debugging -- especially on iOS.'
         ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FIREBASE_DATABSE)
+//            ..addTriggerTask(
+//                ImmediateTrigger(),
+//                Task()
+//                  ..measures = SamplingSchema.debug().getMeasureList(
+//                    namespace: NameSpace.CARP,
+//                    types: [
+//                      //SensorSamplingPackage.ACCELEROMETER,
+//                      //SensorSamplingPackage.GYROSCOPE,
+//                      SensorSamplingPackage.LIGHT,
+//                      SensorSamplingPackage.PEDOMETER,
+//                    ],
+//                  ))
+//            ..addTriggerTask(
+//                DelayedTrigger(delay: 10 * 1000),
+//                Task()
+//                  ..measures = SamplingSchema.debug().getMeasureList(
+//                    namespace: NameSpace.CARP,
+//                    types: [
+//                      ConnectivitySamplingPackage.BLUETOOTH,
+//                      ConnectivitySamplingPackage.WIFI,
+//                      ConnectivitySamplingPackage.CONNECTIVITY,
+//                    ],
+//                  ))
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task()
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  AppsSamplingPackage.APP_USAGE,
+//                  AppsSamplingPackage.APPS,
+//                ],
+//              ))
+//            ..addTriggerTask(
+//                ImmediateTrigger(),
+//                Task()
+//                  ..measures = SamplingSchema.debug().getMeasureList(
+//                    namespace: NameSpace.CARP,
+//                    types: [
+//                      DeviceSamplingPackage.MEMORY,
+//                      DeviceSamplingPackage.DEVICE,
+//                      DeviceSamplingPackage.BATTERY,
+//                      DeviceSamplingPackage.SCREEN,
+//                    ],
+//                  ))
+//        ..addTriggerTask(
+//            PeriodicTrigger(period: 1 * 20 * 1000),
+//            Task()
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  ContextSamplingPackage.WEATHER,
+//                  ContextSamplingPackage.AIR_QUALITY,
+//                ],
+//              ))
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task()
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  ContextSamplingPackage.LOCATION,
+//                  ContextSamplingPackage.GEOLOCATION,
+//                  //ContextSamplingPackage.ACTIVITY,
+//                  ContextSamplingPackage.GEOFENCE,
+//                ],
+//              ))
+//            ..addTriggerTask(
+//                ImmediateTrigger(),
+//                Task()
+//                  ..measures = SamplingSchema.debug().getMeasureList(
+//                    namespace: NameSpace.CARP,
+//                    types: [
+//                      AudioSamplingPackage.NOISE,
+//                    ],
+//                  ))
+//            ..addTriggerTask(
+//                PeriodicTrigger(period: 1 * 53 * 1000, duration: 2 * 1000),
+//                Task('Audio')
+//                  ..measures
+//                      .add(Measure(MeasureType(NameSpace.CARP, AudioSamplingPackage.AUDIO), name: "Audio Recording")))
+//            ..addTriggerTask(
+//                ImmediateTrigger(),
+//                Task()
+//                  ..measures = SamplingSchema.debug().getMeasureList(
+//                    namespace: NameSpace.CARP,
+//                    types: [
+//                      CommunicationSamplingPackage.CALENDAR,
+//                      CommunicationSamplingPackage.TEXT_MESSAGE_LOG,
+//                      CommunicationSamplingPackage.TEXT_MESSAGE,
+//                      CommunicationSamplingPackage.PHONE_LOG,
+//                      CommunicationSamplingPackage.TELEPHONY,
+//                    ],
+//                  ))
+//            ..addTriggerTask(
+//                DelayedTrigger(delay: 10 * 1000),
+//                Task('eSense')
+//                  ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_BUTTON),
+//                      name: 'eSense - Button', enabled: true, deviceName: 'eSense-0332'))
+//                  ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_SENSOR),
+//                      name: 'eSense - Sensors', enabled: true, deviceName: 'eSense-0332', samplingRate: 10)))
+      //
+          ;
+    }
+    return _study;
+  }
+
+  Future<Study> _getCoverageStudy(String studyId) async {
+    if (_study == null) {
+      _study = Study(studyId, username)
+        ..name = studyId
+        ..description = 'This is a study for testing the coverage of sampling.'
+        ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task()
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  SensorSamplingPackage.LIGHT, // 60 s
+//                  ConnectivitySamplingPackage.BLUETOOTH, // 60 s
+//                  ConnectivitySamplingPackage.WIFI, // 60 s
+//                  DeviceSamplingPackage.MEMORY, // 60 s
+//                  ContextSamplingPackage.LOCATION, // 30 s
+//                  AudioSamplingPackage.NOISE, // 60 s
+//                ],
+//              ))
         ..addTriggerTask(
-            ImmediateTrigger(),
+            PeriodicTrigger(period: 5 * 60 * 1000), // 5 min
             Task()
               ..measures = SamplingSchema.debug().getMeasureList(
                 namespace: NameSpace.CARP,
-                types: [HealthSamplingPackage.HEALTH],
-              ));
+                types: [
+                  AppsSamplingPackage.APP_USAGE, // 60 s
+                ],
+              ))
+//        ..addTriggerTask(
+//            PeriodicTrigger(period: 10 * 60 * 1000), // 10 min
+//            Task()
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  ContextSamplingPackage.WEATHER,
+//                  ContextSamplingPackage.AIR_QUALITY,
+//                ],
+//              ))
+      //
+          ;
     }
     return _study;
   }
@@ -129,13 +275,82 @@ class StudyMock implements StudyManager {
         ..description =
             'This is a study designed to test the eSense earable computing platform together with CARP Mobile Sensing'
         ..dataEndPoint = getDataEndpoint(DataEndPointTypes.FILE)
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task('eSense')
+//              ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_BUTTON),
+//                  name: 'eSense - Button', enabled: true, deviceName: 'eSense-0332'))
+//              ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_SENSOR),
+//                  name: 'eSense - Sensors', enabled: true, deviceName: 'eSense-0332', samplingRate: 10)))
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task('Context')
+//              ..measures = SamplingSchema.common().getMeasureList([
+//                ContextSamplingPackage.LOCATION,
+//                ContextSamplingPackage.ACTIVITY,
+//                SensorSamplingPackage.PEDOMETER,
+//              ], namespace: NameSpace.CARP))
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task('Noise')
+//              ..measures.add(NoiseMeasure(MeasureType(NameSpace.CARP, AudioSamplingPackage.NOISE),
+//                  name: 'Ambient Noise', enabled: true, frequency: 37 * 1000, duration: 5 * 1000)))
+//        // audio recording and noise is conflicting... can't run at the same time...
+////            ..measures.add(AudioMeasure(MeasureType(NameSpace.CARP, AudioSamplingPackage.AUDIO),
+////                name: "Audio", frequency: 1 * 53 * 1000, duration: 4 * 1000, studyId: studyId)))
+//        ..addTriggerTask(
+//            PeriodicTrigger(period: 1 * 60 * 1000, duration: 2000),
+//            Task('Weather')
+//              ..measures =
+//                  SamplingSchema.common(namespace: NameSpace.CARP).getMeasureList([ContextSamplingPackage.WEATHER]))
+//        ..addTriggerTask(
+//            DelayedTrigger(delay: 10 * 1000),
+//            Task('Bluetooth')
+//              ..measures.add(PeriodicMeasure(MeasureType(NameSpace.CARP, ConnectivitySamplingPackage.BLUETOOTH),
+//                  name: 'Nearby Devices (Bluetooth Scan)',
+//                  enabled: true,
+//                  frequency: 1 * 30 * 1000,
+//                  duration: 2 * 1000)));
+//        ..addTriggerTask(
+//            PeriodicTrigger(period: 2 * 60 * 1000),
+//            Task('Weather')
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  ContextSamplingPackage.WEATHER,
+//                ],
+//              ))
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task('Context')
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  ContextSamplingPackage.LOCATION,
+//                  ContextSamplingPackage.ACTIVITY,
+//                  ContextSamplingPackage.GEOFENCE,
+//                ],
+//              ))
+//        ..addTriggerTask(
+//            ImmediateTrigger(),
+//            Task('Connectivity')
+//              ..measures = SamplingSchema.debug().getMeasureList(
+//                namespace: NameSpace.CARP,
+//                types: [
+//                  AudioSamplingPackage.NOISE,
+//                  ConnectivitySamplingPackage.BLUETOOTH,
+//                  ConnectivitySamplingPackage.WIFI,
+//                ],
+//              ))
         ..addTriggerTask(
-            PeriodicTrigger(period: 2 * 60 * 1000),
-            Task('Health')
-              ..measures = SamplingSchema.debug().getMeasureList(
-                namespace: NameSpace.CARP,
-                types: [HealthSamplingPackage.HEALTH],
-              ));
+            DelayedTrigger(delay: 10 * 1000),
+            Task('eSense')
+              ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_BUTTON),
+                  name: 'eSense - Button', enabled: true, deviceName: 'eSense-0332'))
+              ..measures.add(ESenseMeasure(MeasureType(NameSpace.CARP, ESenseSamplingPackage.ESENSE_SENSOR),
+                  name: 'eSense - Sensors', enabled: true, deviceName: 'eSense-0332', samplingRate: 10)))
+      //
+          ;
     }
     return _study;
   }
